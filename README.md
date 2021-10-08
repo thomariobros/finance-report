@@ -3,7 +3,7 @@
 # About
 
 Java program to compute [Williams %R](https://en.wikipedia.org/wiki/Williams_%25R) of default Boursorama list, [SBF 120](https://en.wikipedia.org/wiki/SBF_120) and UK markets during the last 14 weeks.
-The program can send the report as email and by triggered by cron.
+The program can send the report as email and triggered by cron.
 
 The only supported datasource is [Boursorama](https://www.boursorama.com/).
 
