@@ -1,3 +1,5 @@
+[![Maven](https://github.com/thomariobros/finance-report/actions/workflows/maven.yml/badge.svg)](https://github.com/thomariobros/finance-report/actions/workflows/maven.yml)
+
 # About
 
 Java program to compute [Williams %R](https://en.wikipedia.org/wiki/Williams_%25R) of default Boursorama list, [SBF 120](https://fr.wikipedia.org/wiki/SBF_120) and UK markets during the last 14 weeks.
