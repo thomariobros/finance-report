@@ -1,0 +1,10 @@
+/.project
+/.classpath
+/.settings
+/.vscode
+/.idea
+/finance-report.iml
+/target
+/*.html
+/deploy.sh
+/doc
