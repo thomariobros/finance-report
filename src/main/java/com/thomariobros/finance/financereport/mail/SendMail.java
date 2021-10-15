@@ -4,10 +4,7 @@ import net.jodah.failsafe.Failsafe;
 import net.jodah.failsafe.RetryPolicy;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.mail.Message;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.*;
 import java.time.Duration;
 import java.util.Properties;
@@ -25,11 +22,29 @@ public class SendMail {
     }
 
     LOGGER.info("Sending email...");
-    Properties props = new Properties();
+    final Properties props = new Properties();
     props.put("mail.smtp.host", System.getenv().getOrDefault("EMAIL_SMTP_HOST", "localhost"));
     props.put("mail.smtp.port", System.getenv().getOrDefault("EMAIL_SMTP_PORT", "25"));
+    props.put("mail.smtp.ssl.enable", System.getenv().getOrDefault("EMAIL_SMTP_SSL_ENABLE", "false"));
+    props.put("mail.smtp.starttls.enable", System.getenv().getOrDefault("EMAIL_SMTP_STARTTTLS_ENABLE", "false"));
+    final boolean auth = Boolean.parseBoolean(System.getenv().getOrDefault("EMAIL_SMTP_AUTH", "false"));
+    props.put("mail.smtp.auth", auth);
+    props.put("mail.smtp.from", System.getenv().getOrDefault("EMAIL_SMTP_FROM", ""));
 
-    Session session = Session.getInstance(props);
+    Session session = null;
+    if (auth) {
+      session = Session.getInstance(props, new Authenticator() {
+        @Override
+        protected PasswordAuthentication getPasswordAuthentication() {
+          return new PasswordAuthentication(
+                  System.getenv().getOrDefault("EMAIL_SMTP_AUTH_USERNAME", ""),
+                  System.getenv().getOrDefault("EMAIL_SMTP_AUTH_PASSWORD", "")
+          );
+        }
+      });
+    } else {
+      session = Session.getInstance(props);
+    }
     Message message = new MimeMessage(session);
     message.setFrom(new InternetAddress(from));
     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
